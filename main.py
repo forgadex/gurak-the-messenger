@@ -9,7 +9,10 @@ from vip_manager import VIPManager
 from cogs.vip_management import VIPManagement
 from cogs.event_handlers import EventHandlers
 from cogs.error_handler import ErrorHandler
+from cogs.tag_management import TagManagement
 from help_command import MyHelpCommand
+from cogs.user_status import UserStatus
+
 
 class MyBot(commands.Bot):
     """Custom bot class for initializing and running the Discord bot."""
@@ -21,12 +24,14 @@ class MyBot(commands.Bot):
 
     async def setup_hook(self):
         """Sets up the bot by initializing the database and loading cogs."""
-        # Initialize the database
+        # Initialize the database (for both VIP and tags)
         init_db()
         # Load cogs
         await self.add_cog(VIPManagement(self, self.vip_manager, self.messaging))
         await self.add_cog(EventHandlers(self, self.vip_manager))
         await self.add_cog(ErrorHandler(self))
+        await self.add_cog(TagManagement(self))  # Add the tag management cog
+        await self.add_cog(UserStatus(self))
 
     async def on_ready(self):
         """Event handler for when the bot is ready."""
@@ -35,4 +40,8 @@ class MyBot(commands.Bot):
 
 def main():
     """Main function to run the bot."""
-    bot = MyBot
+    bot = MyBot(command_prefix=get_prefix, intents=intents)
+    bot.run(TOKEN)
+
+if __name__ == '__main__':
+    main()

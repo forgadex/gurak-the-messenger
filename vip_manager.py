@@ -1,9 +1,8 @@
-# vip_manager.py
-
 import discord
 from discord.ext import commands
 from db import get_subscription, remove_subscription
-from datetime import datetime
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta  # For handling months
 
 class VIPManager:
     """Manages VIP roles and related operations."""
@@ -12,6 +11,25 @@ class VIPManager:
         self.bot = bot
         self.messaging = messaging
         self.vip_role_name = 'VIP'
+
+    def parse_duration(self, duration_str):
+        """Parse a duration string into a timedelta or relativedelta object."""
+        try:
+            amount = int(duration_str[:-1])
+            unit = duration_str[-1]
+        except (ValueError, IndexError):
+            raise ValueError("Invalid duration format. Please specify as <number><unit>, e.g., 10d, 2h.")
+
+        if unit == 'm':
+            return timedelta(minutes=amount)
+        elif unit == 'h':
+            return timedelta(hours=amount)
+        elif unit == 'd':
+            return timedelta(days=amount)
+        elif unit == 'M':  # Handle months with relativedelta
+            return relativedelta(months=amount)
+        else:
+            raise ValueError("Invalid duration unit. Use 'm' for minutes, 'h' for hours, 'd' for days, or 'M' for months.")
 
     async def manage_vip_role(self, member):
         """Assigns or removes the VIP role based on subscription status."""
