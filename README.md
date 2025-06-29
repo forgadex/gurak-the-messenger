@@ -3,6 +3,7 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Features](#features)
+- [Requirements](#requirements)
 - [Setup and Installation](#setup-and-installation)
 - [Configuration](#configuration)
 - [Commands](#commands)
@@ -22,6 +23,13 @@
 - **Tag Management**: Allows users with the appropriate permissions to assign tags to others, useful for organizing users by roles or other criteria.
 - **Custom Help Command**: Provides a comprehensive help command that groups available commands by category.
 - **Error Handling and Logging**: Logs errors and activities, with retries for certain actions if permissions are denied.
+
+## Requirements
+
+This project requires Python 3.10 or newer. Install dependencies using:
+```bash
+pip install -r requirements.txt
+```
 
 ## Setup and Installation
 
